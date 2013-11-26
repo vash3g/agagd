@@ -1,5 +1,5 @@
 from agagd_core.json_response import JsonResponse
-from agagd_core.models import Game, Member, Tournament, Chapters, Country
+from agagd_core.models import Game, Member, Tournament, Chapters
 from agagd_core.tables import GameTable, MemberTable, TournamentTable, OpponentTable, TournamentPlayedTable
 from datetime import datetime, timedelta, date
 from django.core import exceptions

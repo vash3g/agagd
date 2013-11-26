@@ -99,6 +99,7 @@ TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
 
 INSTALLED_APPS = (
     'agagd_core',
+    'ratings',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

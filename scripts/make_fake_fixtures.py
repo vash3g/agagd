@@ -127,7 +127,7 @@ servers = []
 for i, srv_name in enumerate(SERVERS): 
     servers.append({
         'pk': srv_name,
-        'model': 'ratings.server',
+        'model': 'ratings.go_server',
         'fields': {
             'name': srv_name,
             'homepage': 'www.%s.com' % srv_name.lower(),
@@ -138,14 +138,14 @@ for i, srv_name in enumerate(SERVERS):
 
 online_players = []
 alphabet = 'abcdefghijklmnopqrstuvwxyz' * 20
-nicks = {}
+nicks = set() 
 for i in range(member_count):
     mem = random.choice(members)['pk']
-    nick = random.sample(alphabet, 12)
+    nick = ''.join(random.sample(alphabet, 12))
     if nick in nicks:
         continue
     nicks.add(nick)
-    online_player.append({
+    online_players.append({
         'pk': i,
         'model': 'ratings.online_player',
         'fields': {

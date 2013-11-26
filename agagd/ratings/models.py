@@ -24,8 +24,8 @@ class OnlineRating(models.Model):
 class OnlinePlayer(models.Model):
     """ Potentially many OP's per AGA member. """
     pin_player = models.ForeignKey(Member, db_column=u'Pin_Player', primary_key=True)
-    server = models.ForeignKey(GoServer, db_column=u'Server', related_name='server_set')
-    server_secret_key = models.CharField(max_length=1024)
+    go_server = models.ForeignKey(GoServer, db_column=u'Server', related_name='server_set')
+    go_server_secret_key = models.CharField(max_length=1024, unique=True)
     nickname = models.CharField(max_length=50)
     class Meta:
         db_table = u'online_player'

@@ -137,11 +137,11 @@ for i, srv_name in enumerate(SERVERS):
         })
 
 online_players = []
-alphabet = 'abcdefghijklmnopqrstuvwxyz' * 20
+alphabet = ('e'*12 + 'taoi' * 8 + 'nshrd' * 6 + 'lcmwufg' * 4 + 'bjkpqvxyz') *2
 nicks = set() 
 for i in range(member_count):
     mem = random.choice(members)['pk']
-    nick = ''.join(random.sample(alphabet, 12))
+    nick = ''.join(random.sample(alphabet, random.randint(8,12)))
     if nick in nicks:
         continue
     nicks.add(nick)

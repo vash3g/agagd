@@ -34,13 +34,15 @@ class OnlinePlayer(models.Model):
 
 class OnlineGame(models.Model): 
     game_id = models.AutoField(primary_key=True, db_column=u'Game_ID') 
-    game_date = models.DateField(db_column=u'Game_Date') 
+    game_date = models.DateTimeField(db_column=u'Game_Date') 
     handicap = models.IntegerField(db_column=u'Handicap') 
     komi = models.FloatField(db_column=u'Komi') 
     pin_player_1 = models.ForeignKey(Member, db_column=u'Pin_Player_1', related_name='online_games_as_p1')
     pin_player_2 = models.ForeignKey(Member, db_column=u'Pin_Player_2', related_name='online_games_as_p2') 
     result = models.CharField(max_length=1, db_column=u'Result') 
-    sgf_url = models.CharField(max_length=256, db_column=u'Sgf_Code', blank=True) 
+    sgf_url = models.CharField(max_length=256, db_column=u'Sgf_Url', blank=True) 
+    is_rated = models.BooleanField(db_column=u'Is_Rated', default=False)
+    submitted_at = models.DateTimeField(db_column=u'Submitted_At', auto_now_add=True)
     class Meta:
         db_table = u'online_game'
     

@@ -1,8 +1,11 @@
-Django==1.5.4
+Django==1.6.1
 MySQL-python==1.2.4
 django-admin-tools==0.4.1
 django-tables2==0.14.0
-pysqlite==2.6.3
 six==1.4.1
+stevedore==0.8
+virtualenv==1.9.1
+virtualenv-clone==0.2.4
+virtualenvwrapper==3.7
 wsgiref==0.1.2
 yolk==0.4.3

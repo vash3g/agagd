@@ -12,10 +12,8 @@ def view_server():
 def rating_distributions():
     pass
 
-
 def _add_game(game):
-    pass
-
+    pass 
 
 def _unpack_posted_game(data):
     pass

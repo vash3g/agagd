@@ -132,7 +132,7 @@ for i, srv_name in enumerate(SERVERS):
             'name': srv_name,
             'homepage': 'www.%s.com' % srv_name.lower(),
             'api_key':  hashlib.sha224(srv_name).hexdigest(),
-            'game_url_root': 'not-a-url://www.%s.com/games' % srv_name.lower
+            'game_url_root': 'not-a-url://www.%s.com/games' % srv_name.lower()
             }
         })
 

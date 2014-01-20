@@ -12,6 +12,9 @@ class GoServer(models.Model):
         verbose_name = u'go_server'
         verbose_name_plural = u'go_servers'
 
+    def __str__(self):
+        return self.name
+
 
 class OnlineRating(models.Model): 
     pin_player = models.ForeignKey(Member, db_column=u'Pin_Player', related_name='online_ratings_set', primary_key=True)

@@ -37,6 +37,7 @@ class OnlinePlayer(models.Model):
 
 class OnlineGame(models.Model): 
     game_id = models.AutoField(primary_key=True, db_column=u'Game_ID') 
+    go_server = models.ForeignKey(GoServer, db_column=u'Server', related_name='online_games_on')
     game_date = models.DateTimeField(db_column=u'Game_Date') 
     handicap = models.IntegerField(db_column=u'Handicap') 
     komi = models.FloatField(db_column=u'Komi') 

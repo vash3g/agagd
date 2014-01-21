@@ -18,4 +18,6 @@ urlpatterns = patterns('',
 
     url(r'^tournaments/$', 'agagd_core.views.tournament_list', name='tourney_list'),
     url(r'^tournaments/(?P<tourn_code>\w{1,20})/$', 'agagd_core.views.tournament_detail'),
+
+    url(r'^tables/games/$', 'agagd_core.views.games'),
 )

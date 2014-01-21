@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="{% static "tables.css" %}">
     {% endblock stylesheets %}
     {% block js_includes %}
+        <script src={% static "underscore-min.js" %}></script>
         <script src={% static "jquery/js/jquery-2.0.3.min.js" %}></script>
         <script src={% static "jquery/js/jquery-ui-1.10.3.custom.min.js" %}></script>
     {% endblock %}
@@ -30,5 +31,6 @@
       <p> It is developed and maintained by volunteers.  <a href="http://github.com/usgo/agagd">Find us on github!</a></p>
       </div> 
     </div>
+    {% include "agagd_core/tables/js_templates.html" %}
   </body> 
 </html>

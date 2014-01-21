@@ -1,0 +1,17 @@
+<script>
+$(function() {
+    $.ajax({
+        url: "{{ remote_url }}",
+        success: function(response) {
+            var headers = response.headers;
+            var table_template = _.template($("#table-template").html());
+            for (var i = 0; i < response.results.length; i++) {
+                var row = response.results[i];
+                $("#{{ main_games }}").append(table_template(response.results[i]))
+            }
+        }
+    })
+});
+</script>
+<div id="{{ main_games }}">
+</div>

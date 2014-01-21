@@ -13,6 +13,7 @@
 <p>
   <a href="{% url "tourney_list" %}">Search tournaments</a>
 </p>
+{% include "agagd_core/tables/base.html" with id="main_games" remote_url="/tables/games" %}
 <h2> Games Recorded Per Day </h2>
 {% include "agagd_core/game_count_graph.html" %}
 <h2> <a href="{% url "tourney_list" %}">Tournaments</a> </h2>

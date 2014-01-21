@@ -157,8 +157,27 @@ for i in range(member_count):
         })
 
 online_games = []
-for i in range(online_game_count):
+for game_id in range(online_game_count):
+    p1 = random.choice(members)['pk']
+    p2 = random.choice(filter(lambda m: m['pk'] != p1, members))['pk']
+    date = dt.date.today() - dt.timedelta(days = random.randint(2,20))
+    games.append({
+        'pk': game_id,
+        'model': 'ratings.onlinegame',
+        'fields': {
+            'go_server': random.choice(SERVERS),
+            'game_date': date.strftime("%Y-%m-%d"),
+            'handicap': random.randint(0, 2),
+            'komi': 0.0,
+            'pin_player_1': p1,
+            'pin_player_2': p2,
+            'result': '',
+            'is_rated': '',
+            'sgf_url': '',
+            'exclude': '',
+        }
+    })
     pass 
 
 
-print json.dumps(members + tournaments + games + chapters + countries + servers + online_players, indent=4)
+print json.dumps(members + tournaments + games + chapters + countries + servers + online_players + online_games, indent=4)

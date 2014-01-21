@@ -2,6 +2,7 @@ from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import RedirectView
 from django.contrib import admin
+import ratings.urls
 
 admin.autodiscover()
 
@@ -21,6 +22,7 @@ urlpatterns = patterns('',
 
     url(r'^tournaments/$', 'agagd_core.views.tournament_list', name='tourney_list'),
     url(r'^tournaments/(?P<tourn_code>\w{1,20})/$', 'agagd_core.views.tournament_detail'),
-    url(r'^admin/', include(admin.site.urls))
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^online/', include(ratings.urls))
 )
 

@@ -46,6 +46,7 @@ class OnlineGame(models.Model):
     result = models.CharField(max_length=1, db_column=u'Result') 
     sgf_url = models.CharField(max_length=256, db_column=u'Sgf_Url', blank=True) 
     is_rated = models.BooleanField(db_column=u'Is_Rated', default=False)
+    exclude = models.BooleanField(db_column=u'Exclude', default=False)
     submitted_at = models.DateTimeField(db_column=u'Submitted_At', auto_now_add=True)
     class Meta:
         db_table = u'online_game'

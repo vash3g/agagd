@@ -13,8 +13,8 @@ def server_detail(request, server_name):
     server = GoServer.objects.get(pk=server_name)
     game_list = OnlineGame.objects.filter(game_date__gte=datetime.now() - timedelta(days=180)).order_by('-game_date')
     return JsonResponse({
-        'server':server,
-        'game_list': game_list 
+        'server': str(server),
+        'game_list': map(str, game_list)
         })
 
 def rating_distributions():

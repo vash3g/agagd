@@ -50,4 +50,7 @@ class OnlineGame(models.Model):
     submitted_at = models.DateTimeField(db_column=u'Submitted_At', auto_now_add=True)
     class Meta:
         db_table = u'online_game'
+
+    def __str__(self):
+        return 'Game on %s @ %s between %s and %s' % (self.go_server, self.game_date, self.pin_player_1, self.pin_player_2)
     

@@ -172,9 +172,10 @@ for game_id in range(online_game_count):
             'pin_player_1': p1,
             'pin_player_2': p2,
             'result': '',
-            'is_rated': '',
+            'is_rated': False,
             'sgf_url': '',
-            'exclude': '',
+            'exclude': False,
+            'submitted_at': str(dt.datetime.now())
         }
     })
     pass 

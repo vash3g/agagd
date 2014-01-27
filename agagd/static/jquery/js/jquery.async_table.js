@@ -24,7 +24,8 @@
         previous_link_template = "<span class='previous'>Previous</span>",
         next_link_template = "<span class='next'>Next</span>",
         paginator_template = "<div class='paginator'>CONTENTS</div>",
-        cache = {};
+        cache = {},
+        deferred_go_to = {};
 
     $.async_table = {};
 
@@ -35,15 +36,25 @@
     };
 
     $.async_table.go_to_page = function(table_id, page, sort) {
-        if (table_id in cache) {
-            config = cache[table_id];
-            if (page) {
-                config.data.page = parseInt(page);
-            }
-            if (sort) {
-                config.data.sort = sort;
-            }
+        var config = cache[table_id],
+            data = config? config.data : {};
+
+        if (page) {
+            data.page = parseInt(page);
+        } else {
+            delete data.page;
+        }
+
+        if (sort) {
+            data.sort = sort;
+        } else {
+            delete data.sort;
+        }
+
+        if (config) {
             config.reload();
+        } else {
+            deferred_go_to[table_id] = data;
         }
     };
 
@@ -60,9 +71,8 @@
             }
 
             // Optional fields
-            if (!config.data) {
-                config.data = {};
-            }
+            config.data = deferred_go_to[config.id] || config.data || {};
+            delete deferred_go_to[config.id];
 
             // For external API
             config.reload = load_remote_url;
@@ -148,7 +158,7 @@
                 });
 
                 // Trigger loaded events for external notifications
-                $("body").trigger({
+                $(window).trigger({
                     type: "async_table_loaded",
                     table_id: config.id,
                     sort: data.sort,
@@ -169,4 +179,4 @@
         check_config();
         load_remote_url();
     }
-})(jQuery);
+})(jQuery, window);

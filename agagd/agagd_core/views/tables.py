@@ -18,18 +18,21 @@ def games(request):
     table = create_table(
         request,
         Game.objects.values('pin_player_1', 'pin_player_2', 'pin_player_1__full_name', 'pin_player_2__full_name'),
-        ['player_1', 'player_2'],
+        (
+            ('player_1', 'Player 1'),
+            ('player_2', 'Player 2'),
+        ),
     )
 
     for game in table['results']:
         game['player_1'] = {
             'type': 'link',
-            'display': game['pin_player_1__full_name'],
+            'label': game['pin_player_1__full_name'],
             'link': reverse('member_detail', kwargs={'member_id': game['pin_player_1']})
         }
         game['player_2'] = {
             'type': 'link',
-            'display': game['pin_player_2__full_name'],
+            'label': game['pin_player_2__full_name'],
             'link': reverse('member_detail', kwargs={'member_id': game['pin_player_2']})
         }
 
@@ -60,12 +63,12 @@ def create_table(request, queryset, headers):
         'results': current_page,
         'total_pages': pages.num_pages,
         'page': requested_page,
-        'headers': headers
+        'headers': map(lambda h: {'key': h[0], 'label': h[1]}, headers),
     }
 
 def cleanup_table(table):
     ''' Make sure only the headers show up in each field list '''
-    headers = set(table['headers'])
+    headers = set(map(lambda h: h['key'], table['headers']))
     for row in table['results']:
         keys_to_delete = set(row.keys()) - headers
         for key in keys_to_delete:

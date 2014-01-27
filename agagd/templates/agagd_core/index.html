@@ -1,7 +1,7 @@
-
 {% extends "base.html" %} 
 {% load staticfiles %} 
 {% load render_table from django_tables2 %}
+{% load agagd %} 
 
 {% block title %} AGAGD - The AGA Games Database  {% endblock %} 
 {% block stylesheets %} {{ block.super }} {% endblock stylesheets %}
@@ -13,7 +13,7 @@
 <p>
   <a href="{% url "tourney_list" %}">Search tournaments</a>
 </p>
-{% include "agagd_core/tables/base.html" with id="main_games" remote_url="/tables/games" %}
+{% async_table table_id="games" remote_view="games_data" %}
 <h2> Games Recorded Per Day </h2>
 {% include "agagd_core/game_count_graph.html" %}
 <h2> <a href="{% url "tourney_list" %}">Tournaments</a> </h2>

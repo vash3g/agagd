@@ -17,7 +17,8 @@ urlpatterns = patterns('',
     url(r'^gamestats/$', 'agagd_core.views.game_stats'), 
 
     url(r'^tournaments/$', 'agagd_core.views.tournament_list', name='tourney_list'),
-    url(r'^tournaments/(?P<tourn_code>\w{1,20})/$', 'agagd_core.views.tournament_detail'),
+    url(r'^tournaments/(?P<tourn_code>\w{1,20})/$', 'agagd_core.views.tournament_detail', name='tourney_detail'),
 
-    url(r'^tables/games/$', 'agagd_core.views.games', name='games_data'),
+    url(r'^tables/games/$', 'agagd_core.views.games', name='json_games'),
+    url(r'^tables/games/(?P<member_id>\d+)/$', 'agagd_core.views.games_vs', name='json_member_games'),
 )

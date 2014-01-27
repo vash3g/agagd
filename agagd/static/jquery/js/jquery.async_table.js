@@ -72,6 +72,7 @@
 
             // Optional fields
             config.data = deferred_go_to[config.id] || config.data || {};
+            config.extra_parameters = config.extra_parameters || {};
             delete deferred_go_to[config.id];
 
             // For external API
@@ -79,7 +80,7 @@
         }
 
         function load_remote_url(data) {
-            var $container = $("#" + config.id);
+            var $container = $("#" + config.id), request_data, key;
 
             function failed_load_view() {
                 $container.html(failure_template.replace(/TABLE_ID/g, config.id));
@@ -101,14 +102,14 @@
                                 response.headers,
                                 function(header) {
                                     var value = cell[header.key];
-                                    if (typeof value === "string") {
-                                        return cell_template.replace("CONTENTS", value);
-                                    } else {
+                                    if (value.type) {
                                         if (value.type === "link") {
                                             return link_cell_template.replace("LINK", value.link).replace("LABEL", value.label);
                                         } else {
                                             return cell_template.replace("CONTENTS", "");
                                         }
+                                    } else {
+                                        return cell_template.replace("CONTENTS", value);
                                     }
                                 }
                             ).join("");
@@ -167,10 +168,15 @@
             }
 
             data = data || config.data;
+            request_data = JSON.parse(JSON.stringify(data));
+            for (key in config.extra_parameters) {
+                request_data[key] = config.extra_parameters[key];
+            }
+
             loading_table_view();
             $.ajax({
                 url: config.remote_url,
-                data: data,
+                data: request_data,
                 success: populate_table,
                 error: failed_load_view
             });

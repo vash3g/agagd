@@ -1,5 +1,5 @@
 from agagd_core.json_response import JsonResponse
-from agagd_core.models import Game, Member, Tournament, Chapters, Country
+from agagd_core.models import Game, Member, Tournament, Chapters
 from agagd_core.tables import GameTable, MemberTable, TournamentTable, OpponentTable, TournamentPlayedTable
 from datetime import datetime, timedelta, date
 from django.core import exceptions
@@ -127,7 +127,8 @@ def member_detail(request, member_id):
                 'max_rating': max_rating,
                 'num_games': len(game_list),
                 'opponents': opp_table,
-                'tourneys': t_table
+                'tourneys': t_table,
+                'game_feed': reverse('json_member_games', kwargs={'member_id': member_id}),
             })
 
 @require_POST

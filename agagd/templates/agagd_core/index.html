@@ -13,7 +13,6 @@
 <p>
   <a href="{% url "tourney_list" %}">Search tournaments</a>
 </p>
-{% async_table table_id="games" remote_view="games_data" %}
 <h2> Games Recorded Per Day </h2>
 {% include "agagd_core/game_count_graph.html" %}
 <h2> <a href="{% url "tourney_list" %}">Tournaments</a> </h2>
@@ -23,10 +22,6 @@
   <p> No Tournaments are available. </p>
 {% endif %}
 
-  <h2> Games played in the last 180 days</h2>
-  {% if table %}
-      {% render_table table %}
-  {% else %}
-      <p>No games are available.</p>
-  {% endif %}
+    <h2> Games played in the last 180 days</h2>
+    {% async_table table_id="games" url_name="json_games" queryset="last_180_days" %}
 {% endblock %}

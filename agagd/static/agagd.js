@@ -46,7 +46,8 @@ $(function() {
     // Change the hash when async table loads happen
     $(window).on("async_table_loaded", function(event) {
         var url_hash = window.location.hash.replace("#", ""),
-            url_params = url_hash? $.deserialize(url_hash) : {}, key;
+            url_params = url_hash? $.deserialize(url_hash) : {},
+            key, scroll_top;
         if (event.page || event.sort) {
             if (event.page) {
                 async_table_url_params[event.table_id + "__page"] = event.page;
@@ -57,7 +58,9 @@ $(function() {
             for (key in async_table_url_params) {
                 url_params[key] = async_table_url_params[key];
             }
+            scroll_top = document.body.scrollTop;
             window.location.hash = $.param(url_params);
+            document.body.scrollTop = scroll_top;
         }
     });
 });

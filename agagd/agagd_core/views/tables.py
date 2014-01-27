@@ -20,7 +20,7 @@ def games(request):
     return games_table(request)
 
 @json_table
-def games_vs(request, member_id):
+def member_games(request, member_id):
     game_list= Game.objects.filter(
         Q(pin_player_1__exact=member_id) | Q(pin_player_2__exact=member_id)
     ).order_by('-game_date','round')

@@ -8,7 +8,7 @@ def async_table(table_id, remote_view):
     remote_url = reverse(remote_view)
     return '''
         <script>
-            $.make_async_table({{
+            $.async_table.init({{
                 id: "{table_id}",
                 remote_url: "{remote_url}"
             }});

@@ -26,13 +26,28 @@
         paginator_template = "<div class='paginator'>CONTENTS</div>",
         cache = {};
 
-    $.make_async_table = function(config) {
+    $.async_table = {};
+
+    $.async_table.init = function(config) {
         $(function() {
-            _make_async_table(config);
+            init_async_table(config);
         });
     };
 
-    function _make_async_table(config) {
+    $.async_table.go_to_page = function(table_id, page, sort) {
+        if (table_id in cache) {
+            config = cache[table_id];
+            if (page) {
+                config.data.page = parseInt(page);
+            }
+            if (sort) {
+                config.data.sort = sort;
+            }
+            config.reload();
+        }
+    };
+
+    function init_async_table(config) {
         function check_config() {
             var has_required_fields = config && config.id && config.remote_url;
 
@@ -43,6 +58,14 @@
             } else {
                 cache[config.id] = config;
             }
+
+            // Optional fields
+            if (!config.data) {
+                config.data = {};
+            }
+
+            // For external API
+            config.reload = load_remote_url;
         }
 
         function load_remote_url(data) {
@@ -120,12 +143,20 @@
                     } else {
                         data.sort = sort_key;
                     }
-                    data.page = 0;
+                    data.page = 1;
                     load_remote_url(data);
+                });
+
+                // Trigger loaded events for external notifications
+                $("body").trigger({
+                    type: "async_table_loaded",
+                    table_id: config.id,
+                    sort: data.sort,
+                    page: data.page
                 });
             }
 
-            data = data || {};
+            data = data || config.data;
             loading_table_view();
             $.ajax({
                 url: config.remote_url,

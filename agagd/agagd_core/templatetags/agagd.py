@@ -5,8 +5,16 @@ import json
 
 register = template.Library()
 
-@register.simple_tag
-def async_table(table_id, url_name=None, remote_url=None, **kwargs):
+@register.simple_tag(takes_context=True)
+def async_table(context, table_id, url_name=None, remote_url=None, **kwargs):
+    if '_async_table' not in context:
+        context['_async_table'] = set()
+
+    if table_id in context['_async_table']:
+        raise TemplateSyntaxError('Duplicated async_table id: %s' % table_id)
+    else:
+        context['_async_table'].add(table_id)
+
     if all([url_name, remote_url]) or not any([url_name, remote_url]):
         raise TemplateSyntaxError('You must set url_name or remote_url - not both or none.')
 

@@ -21,4 +21,5 @@ urlpatterns = patterns('',
 
     url(r'^tables/games/$', 'agagd_core.views.games', name='json_games'),
     url(r'^tables/games/(?P<member_id>\d+)/$', 'agagd_core.views.member_games', name='json_member_games'),
+    url(r'^tables/tournaments/$', 'agagd_core.views.tournaments', name='json_tournaments'),
 )

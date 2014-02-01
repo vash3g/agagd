@@ -1,7 +1,7 @@
 from agagd_core.json_response import JsonResponse
 from agagd_core.models import Game, Member, Tournament, Chapters
 from agagd_core.tables import GameTable, MemberTable, TournamentTable, OpponentTable, TournamentPlayedTable
-from datetime import datetime, timedelta, date
+from datetime import datetime, date
 from django.core import exceptions
 from django.core.urlresolvers import reverse
 from django.db.models import Q, Count
@@ -11,17 +11,7 @@ from django.views.decorators.http import require_POST, require_GET
 from django_tables2 import RequestConfig
 
 def index(request):
-    game_list = Game.objects.filter(game_date__gte=datetime.now() - timedelta(days=180)).order_by('-game_date')
-    table = GameTable(game_list, prefix='games')
-    RequestConfig(request).configure(table)
-    tourneys = Tournament.objects.all().order_by('-tournament_date')
-    t_table= TournamentTable(tourneys, prefix='tourneys')
-    RequestConfig(request, paginate={'per_page': 10}).configure(t_table)
-    return render(request, 'agagd_core/index.html',
-            {
-                'table': table,
-                'tournaments': t_table,
-            }) 
+    return render(request, 'agagd_core/index.html') 
 
 @require_GET
 def search(request):

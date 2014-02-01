@@ -4,23 +4,20 @@
 {% load agagd %} 
 
 {% block title %} AGAGD - The AGA Games Database  {% endblock %} 
-{% block stylesheets %} {{ block.super }} {% endblock stylesheets %}
 {% block content %} 
-{{ block.super }} 
-<p>
-  {% include "agagd_core/fetch_player_form.html" %}
-</p>
-<p>
-  <a href="{% url "tourney_list" %}">Search tournaments</a>
-</p>
-<h2> Games Recorded Per Day </h2>
-{% include "agagd_core/game_count_graph.html" %}
-<h2> <a href="{% url "tourney_list" %}">Tournaments</a> </h2>
-{% if tournaments %}
-  {% render_table tournaments %}
-{% else %}
-  <p> No Tournaments are available. </p>
-{% endif %}
+    {{ block.super }} 
+    <p>
+      {% include "agagd_core/fetch_player_form.html" %}
+    </p>
+    <p>
+      <a href="{% url "tourney_list" %}">Search tournaments</a>
+    </p>
+
+    <h2> Games Recorded Per Day </h2>
+    {% include "agagd_core/game_count_graph.html" %}
+
+    <h2> <a href="{% url "tourney_list" %}">Tournaments</a> </h2>
+    {% async_table table_id="tournaments" url_name="json_tournaments" %}
 
     <h2> Games played in the last 180 days</h2>
     {% async_table table_id="games" url_name="json_games" queryset="last_180_days" %}

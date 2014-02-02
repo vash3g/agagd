@@ -25,20 +25,8 @@
     {% csrf_token %}
     <p> Find matchups of {{player.full_name}} against AGA ID# <input name="opponent_id" type="text"/>
 </form>
-<p> {{ player.full_name }} has {{num_games}} games in the AGAGD:</p> 
-
+    <p>{{ player.full_name }} has {{num_games}} games in the AGAGD:</p> 
     {% async_table table_id="games" remote_url=game_feed %}
-
-  {% if opponents %}
-  <p> {% render_table opponents %} </p>
-  {% else %}
-      <p>No opponent breakdown available.</p>
-  {% endif %}
-
-  {% if tourneys %}
-  <p> {% render_table tourneys %} </p>
-  {% else %}
-      <p>No tournament breakdown available.</p>
-  {% endif %}
-
+    {% async_table table_id="opponents" remote_url=opponent_feed %}
+    {% async_table table_id="tournaments" remote_url=tournament_feed %}
 {% endblock %}

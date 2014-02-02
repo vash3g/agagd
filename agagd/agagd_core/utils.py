@@ -21,7 +21,7 @@ def cleanup_table(table):
     return table
 
 @require_GET
-def create_table(request, queryset, headers):
+def create_table_from_queryset(request, queryset, headers):
     pages = Paginator(
         queryset,
         per_page=request.GET.get('per_page', DEFAULT_PER_PAGE)
@@ -36,6 +36,22 @@ def create_table(request, queryset, headers):
             model_to_dict,
             pages.page(requested_page).object_list
         )
+
+    return {
+        'results': current_page,
+        'total_pages': pages.num_pages,
+        'page': requested_page,
+        'headers': map(lambda h: {'key': h[0], 'label': h[1]}, headers),
+    }
+
+@require_GET
+def create_table_from_iterable(request, iterable, headers):
+    pages = Paginator(
+        iterable,
+        per_page=request.GET.get('per_page', DEFAULT_PER_PAGE)
+    )
+    requested_page = request.GET.get('page', 1)
+    current_page = pages.page(requested_page).object_list
 
     return {
         'results': current_page,

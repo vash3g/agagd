@@ -1,8 +1,7 @@
 from agagd_core.json_response import JsonResponse
 from agagd_core.models import Game, Member, Tournament, Chapters
-from agagd_core.tables import GameTable, MemberTable, TournamentTable, OpponentTable, TournamentPlayedTable
-from datetime import datetime, date
-from django.core import exceptions
+from agagd_core.tables import GameTable, MemberTable, TournamentTable
+from datetime import datetime
 from django.core.urlresolvers import reverse
 from django.db.models import Q, Count
 from django.http import HttpResponseRedirect
@@ -57,11 +56,6 @@ def member_detail(request, member_id):
     Fetches the list of ratings and puts them in a format for graphing.
     Computes the tournament data and opponent data for respective tables.
     """
-    game_list = Game.objects.filter(
-            Q(pin_player_1__exact=member_id) | Q(pin_player_2__exact=member_id)
-            ).order_by('-game_date','round')
-    table = GameTable(game_list, prefix='games')
-    RequestConfig(request, paginate={'per_page': 20}).configure(table) 
 
     player = Member.objects.get(member_id=member_id)
     ratings = player.ratings_set.all().order_by('-elab_date')
@@ -71,54 +65,15 @@ def member_detail(request, member_id):
     else:
         max_rating = last_rating = None
 
-    #compute additional tables for opponents & tournament info. here
-    #TODO: refactor this into something nicer.
-    opponent_data = {}
-    tourney_data = {}
-    for game in game_list:
-        try:
-            t_dat = tourney_data.get(game.tournament_code.pk, {})
-            t_dat['tournament'] = game.tournament_code
-            t_dat['won'] = t_dat.get('won', 0)
-            t_dat['lost'] = t_dat.get('lost', 0)
-            t_dat['date'] = t_dat.get('date', game.game_date)
-
-            op = game.player_other_than(player)
-            opp_dat = opponent_data.get(op, {}) 
-            opp_dat['opponent'] = op
-            opp_dat['total'] = opp_dat.get('total', 0) + 1
-            opp_dat['won'] = opp_dat.get('won', 0)
-            opp_dat['lost'] = opp_dat.get('lost', 0)
-            if game.won_by(player):
-                opp_dat['won'] += 1
-                t_dat['won'] += 1
-            else:
-                opp_dat['lost'] += 1
-                t_dat['lost'] += 1
-            opponent_data[op] = opp_dat
-            tourney_data[game.tournament_code.pk] = t_dat
-        except exceptions.ObjectDoesNotExist:
-            print 'failing game_id: %s' % game.pk 
-
-    opp_table = OpponentTable(opponent_data.values(), player, prefix='opp')
-    opp_table.this_player = player
-    RequestConfig(request, paginate={'per_page': 10}).configure(opp_table) 
-
-    t_table = TournamentPlayedTable(
-            sorted(tourney_data.values(), key=lambda d: d.get('date', date.today()) or date.today(), reverse=True),
-            prefix='ts_played')
-    RequestConfig(request, paginate={'per_page': 10}).configure(t_table)
-
     return render(request, 'agagd_core/member.html',
             {
-                'table': table,
                 'player': player,
                 'rating': last_rating,
                 'max_rating': max_rating,
-                'num_games': len(game_list),
-                'opponents': opp_table,
-                'tourneys': t_table,
+                'num_games': Game.objects.filter(Q(pin_player_1=player)|Q(pin_player_2=player)).count(),
                 'game_feed': reverse('json_member_games', kwargs={'member_id': member_id}),
+                'opponent_feed': reverse('json_member_opponents', kwargs={'member_id': member_id}),
+                'tournament_feed': reverse('json_member_tournaments', kwargs={'member_id': member_id}),
             })
 
 @require_POST

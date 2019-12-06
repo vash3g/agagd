@@ -122,6 +122,8 @@ ul, dl {
 
 ol {
     margin-left:1em;
+    font-size: 1em;
+    display:block;
 }
 
 

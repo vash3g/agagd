@@ -5,6 +5,7 @@ from agagd_core.models import (
     Member,
     MostRatedGamesPastYear,
     MostTournamentsPastYear,
+    Rating,
     TopDan,
     TopKyu,
     Tournament,
@@ -311,7 +312,10 @@ class TournamentPlayedTable(tables.Table):
     date = tables.Column(default="Unknown")
     won = tables.Column(verbose_name="Won", default=0)
     lost = tables.Column(verbose_name="Lost", default=0)
+    rating = tables.column(verbose_name="Rating", default=0)
+    sigma = tables.column(verbose_name="Sigma", default=0)
     # Steve note for issue #122 here
+    #rating/sigma pulls from agagd_usgo_db.ratings [pin_player, rating, sigma, elab_date, tourament_code, ID]
 
     class Meta:
         attrs = {"class": "paleblue"}
